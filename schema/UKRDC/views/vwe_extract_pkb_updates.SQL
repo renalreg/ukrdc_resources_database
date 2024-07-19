@@ -9,10 +9,17 @@ FROM patientrecord
 INNER JOIN vwe_pkb_members ON patientrecord.ukrdcid = vwe_pkb_members.ukrdcid
 INNER JOIN facility ON patientrecord.sendingfacility = facility.code
 WHERE
-    -- Require that Unit is Enabled
-    facility.pkb_out = true
-    AND
-    patientrecord.sendingextract IN ('PV', 'UKRDC')
+	(
+		(
+			patientrecord.sendingextract = 'UKRDC' AND
+			facility.ukrdc_out_pkb = TRUE
+		)
+		OR
+		(
+			patientrecord.sendingextract = 'PV' AND
+			facility.pv_out_pkb = TRUE
+		)
+	)
     AND
     (
         (
@@ -92,10 +99,17 @@ LEFT JOIN pvdata ON patientrecord.pid = pvdata.id
 INNER JOIN vwe_pkb_members ON patientrecord.ukrdcid = vwe_pkb_members.ukrdcid
 INNER JOIN facility ON patientrecord.sendingfacility = facility.code
 WHERE
-    -- Require that Unit is Enabled
-    facility.pkb_out = true
-    AND
-    patientrecord.sendingextract IN ('PV', 'UKRDC')
+	(
+		(
+			patientrecord.sendingextract = 'UKRDC' AND
+			facility.ukrdc_out_pkb = TRUE
+		)
+		OR
+		(
+			patientrecord.sendingextract = 'PV' AND
+			facility.pv_out_pkb = TRUE
+		)
+	)
     AND
     (
         (
@@ -178,10 +192,17 @@ INNER JOIN patientrecord ON document.pid = patientrecord.pid
 INNER JOIN vwe_pkb_members ON patientrecord.ukrdcid = vwe_pkb_members.ukrdcid
 INNER JOIN facility ON patientrecord.sendingfacility = facility.code
 WHERE
-    -- Require that Unit is Enabled
-    facility.pkb_out = true
-    AND
-    patientrecord.sendingextract IN ('PV', 'UKRDC')
+	(
+		(
+			patientrecord.sendingextract = 'UKRDC' AND
+			facility.ukrdc_out_pkb = TRUE
+		)
+		OR
+		(
+			patientrecord.sendingextract = 'PV' AND
+			facility.pv_out_pkb = TRUE
+		)
+	)
     AND
     (
         (
@@ -210,10 +231,17 @@ INNER JOIN patientrecord ON laborder.pid = patientrecord.pid
 INNER JOIN vwe_pkb_members ON patientrecord.ukrdcid = vwe_pkb_members.ukrdcid
 INNER JOIN facility ON patientrecord.sendingfacility = facility.code
 WHERE
-    -- Require that Unit is Enabled
-    facility.pkb_out = true
-    AND
-    patientrecord.sendingextract IN ('PV', 'UKRDC')
+	(
+		(
+			patientrecord.sendingextract = 'UKRDC' AND
+			facility.ukrdc_out_pkb = TRUE
+		)
+		OR
+		(
+			patientrecord.sendingextract = 'PV' AND
+			facility.pv_out_pkb = TRUE
+		)
+	)
     AND
     (
         (
@@ -248,10 +276,17 @@ INNER JOIN patientrecord ON observation.pid = patientrecord.pid
 INNER JOIN vwe_pkb_members ON patientrecord.ukrdcid = vwe_pkb_members.ukrdcid
 INNER JOIN facility ON patientrecord.sendingfacility = facility.code
 WHERE
-    -- Require that Unit is Enabled
-    facility.pkb_out = true
-    AND
-    patientrecord.sendingextract IN ('PV', 'UKRDC')
+	(
+		(
+			patientrecord.sendingextract = 'UKRDC' AND
+			facility.ukrdc_out_pkb = TRUE
+		)
+		OR
+		(
+			patientrecord.sendingextract = 'PV' AND
+			facility.pv_out_pkb = TRUE
+		)
+	)
     AND
     (
         (
