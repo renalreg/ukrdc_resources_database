@@ -33,5 +33,14 @@ WHERE
         WHERE
             pm.programname IN ('RADAR', 'NURTURE') AND
             pm.totime IS NULL
+    )
+    AND
+     NOT EXISTS (
+        SELECT 1
+        FROM programmembership pm2
+        WHERE
+            pm2.pid = pr.pid
+            AND pm2.programname IN ('RADAR.COHORT.NOCON', 'RADAR.COHORT.CONS_WTDWN')
     );
+
 GRANT ALL PRIVILEGES ON "extract".vwe_extract_radar TO ukrdc;
