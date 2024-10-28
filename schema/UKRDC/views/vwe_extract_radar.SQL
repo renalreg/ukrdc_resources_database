@@ -33,5 +33,15 @@ WHERE
         WHERE
             pm.programname IN ('RADAR', 'NURTURE') AND
             pm.totime IS NULL
+    )
+    AND
+    NOT EXISTS (
+        SELECT 1
+        FROM programmembership pm2
+        INNER JOIN patientrecord pr3 ON pm2.pid = pr3.pid
+        WHERE
+            pr3.ukrdcid = pr.ukrdcid
+            AND pm2.programname IN ('RADAR.COHORT.NOCON', 'RADAR.COHORT.CONS_WTDWN')
     );
+
 GRANT ALL PRIVILEGES ON "extract".vwe_extract_radar TO ukrdc;
