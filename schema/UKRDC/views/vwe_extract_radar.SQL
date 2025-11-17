@@ -1,6 +1,7 @@
-CREATE VIEW vwe_extract_radar AS
+CREATE OR REPLACE VIEW vwe_extract_radar AS
 SELECT
-    pr.pid
+    pr.pid,
+    pr.sendingfacility
 FROM
     patientrecord pr
 WHERE
@@ -42,6 +43,7 @@ WHERE
         WHERE
             pr3.ukrdcid = pr.ukrdcid
             AND pm2.programname IN ('RADAR.COHORT.NOCON', 'RADAR.COHORT.CONS_WTDWN')
+			AND pm2.totime IS NULL
     );
 
 GRANT ALL PRIVILEGES ON "extract".vwe_extract_radar TO ukrdc;
