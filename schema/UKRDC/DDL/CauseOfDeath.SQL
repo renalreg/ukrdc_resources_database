@@ -27,7 +27,7 @@ WITH (
 );
 ALTER TABLE "extract".causeofdeath
   OWNER TO ukrdc;
-GRANT ALL PRIVILEGES on TABLE "extract".causeofdeath TO ukrdc
+GRANT ALL PRIVILEGES on TABLE "extract".causeofdeath TO ukrdc;
 
 CREATE INDEX causeofdeath_pid_idx
   ON "extract".causeofdeath (pid);

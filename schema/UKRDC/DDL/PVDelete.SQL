@@ -19,13 +19,3 @@ WITH (
 ALTER TABLE "extract".pvdelete
   OWNER TO ukrdc;
 GRANT ALL PRIVILEGES ON TABLE "extract".pvdelete TO ukrdc;
-
-CREATE SEQUENCE "extract".pvdelete_did_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER SEQUENCE "extract".pvdelete_did_seq OWNER TO ukrdc;

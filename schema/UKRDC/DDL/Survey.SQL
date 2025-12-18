@@ -34,5 +34,5 @@ ALTER TABLE "extract".survey
   OWNER TO ukrdc;
 GRANT ALL PRIVILEGES ON TABLE "extract".survey TO ukrdc;
 
-CREATE INDEX survey
+CREATE INDEX survey_pid_idx
   ON "extract".survey (pid);
