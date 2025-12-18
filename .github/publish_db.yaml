@@ -1,0 +1,71 @@
+name: Build and attach DB dump
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  build-db-dump:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_DB: postgres
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U postgres -d ukrdc"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
+
+    env:
+      PGHOST: localhost
+      PGPORT: 5432
+      PGUSER: postgres
+      PGPASSWORD: postgres
+      PGDATABASE: postgres
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Wait for Postgres
+        run: |
+          for i in {1..30}; do
+            if pg_isready -h "$PGHOST" -p "$PGPORT" -U "$PGUSER" -d "$PGDATABASE"; then
+              exit 0
+            fi
+            echo "Postgres not ready yet... ($i)"
+            sleep 2
+          done
+          echo "Postgres did not become ready in time"
+          exit 1
+
+      - name: Run INIT_DB.SQL
+        run: |
+          cd schema/UKRDC/scripts
+          psql -v ON_ERROR_STOP=1 -f schema/UKRDC/scripts/INIT_DB.SQL
+
+      - name: Run sync_codes.sh
+        run: |
+          apt update
+          apt install -y curl
+          cd schema/UKRDC/scripts
+          chmod +x sync_codes.sh
+          bash sync_codes.sh
+
+      - name: Dump database
+        run: |
+          pg_dump -h localhost -p 5432 -U postgres -d UKRDC4 -Fc -f ukrdc_database.dump
+
+      - name: Attach dump to release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: ukrdc_database.dump
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
