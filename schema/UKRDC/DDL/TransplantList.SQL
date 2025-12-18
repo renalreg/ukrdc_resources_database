@@ -34,11 +34,17 @@ CREATE TABLE "extract".transplantlist
   updatedon timestamp without time zone,
   actioncode character varying(3),
   externalid character varying(100),
-  CONSTRAINT transplantlist_pkey PRIMARY KEY (id)
+  creation_date timestamp without time zone DEFAULT now() NOT NULL,
+  update_date timestamp without time zone,
+  CONSTRAINT transplantlist_pkey PRIMARY KEY (id),
+  CONSTRAINT transplantlist_pid_fkey
+    FOREIGN KEY (pid)
+    REFERENCES "extract".patientrecord(pid)
 )
 WITH (
   OIDS=FALSE
 );
+
 ALTER TABLE "extract".transplantlist
   OWNER TO ukrdc;
-GRANT ALL PRIVILEGES on TABLE "extract".transplantlist TO ukrdc
+GRANT ALL PRIVILEGES ON TABLE "extract".transplantlist TO ukrdc;

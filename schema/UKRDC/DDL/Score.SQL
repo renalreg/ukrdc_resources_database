@@ -9,6 +9,8 @@ CREATE TABLE "extract".score
   scoretypecode character varying(100),
   scoretypecodestd character varying(100),
   scoretypedesc character varying(100),
+  creation_date timestamp without time zone DEFAULT now() NOT NULL,
+  update_date timestamp without time zone,
   CONSTRAINT score_pkey PRIMARY KEY (id)
 )
 WITH (
@@ -16,4 +18,4 @@ WITH (
 );
 ALTER TABLE "extract".score
   OWNER TO ukrdc;
-GRANT ALL PRIVILEGES on TABLE "extract".score TO ukrdc
+GRANT ALL PRIVILEGES ON TABLE "extract".score TO ukrdc;

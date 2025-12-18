@@ -20,6 +20,8 @@ CREATE TABLE "extract".familydoctor
   contactvalue character varying(100),
   email character varying(100),
   commenttext character varying(100),
+  creation_date timestamp without time zone DEFAULT now() NOT NULL,
+  update_date timestamp without time zone,
   CONSTRAINT familydoctor_pkey PRIMARY KEY (id)
 )
 WITH (
@@ -27,4 +29,4 @@ WITH (
 );
 ALTER TABLE "extract".familydoctor
   OWNER TO ukrdc;
-GRANT ALL PRIVILEGES on TABLE "extract".familydoctor TO ukrdc
+GRANT ALL PRIVILEGES ON TABLE "extract".familydoctor TO ukrdc;

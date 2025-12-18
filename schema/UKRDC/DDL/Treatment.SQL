@@ -43,11 +43,16 @@ CREATE TABLE "extract".treatment
   qbl07 character varying(255),
   erf61 character varying(255),
   pat35 character varying(255),
-  CONSTRAINT treatment_pkey PRIMARY KEY (id)
+  creation_date timestamp without time zone DEFAULT now() NOT NULL,
+  update_date timestamp without time zone,
+  CONSTRAINT treatment_pkey PRIMARY KEY (id),
+  CONSTRAINT treatment_pid_fkey
+    FOREIGN KEY (pid)
+    REFERENCES "extract".patientrecord(pid)
 )
 WITH (
   OIDS=FALSE
 );
 ALTER TABLE "extract".treatment
   OWNER TO ukrdc;
-GRANT ALL PRIVILEGES on TABLE "extract".treatment TO ukrdc
+GRANT ALL PRIVILEGES ON TABLE "extract".treatment TO ukrdc;

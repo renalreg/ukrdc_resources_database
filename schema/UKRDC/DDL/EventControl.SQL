@@ -5,6 +5,8 @@ CREATE TABLE "extract".eventcontrol
     eventtype character(20) COLLATE pg_catalog."default" NOT NULL,
     eventdate timestamp without time zone NOT NULL,
     pendingeventdate timestamp without time zone,
+    creation_date timestamp without time zone DEFAULT now() NOT NULL,
+    update_date timestamp without time zone,
     CONSTRAINT eventcontrol_pkey PRIMARY KEY (eventtype)
 )
 WITH (

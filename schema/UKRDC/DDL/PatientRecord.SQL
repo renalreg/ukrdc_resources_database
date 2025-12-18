@@ -16,6 +16,8 @@ CREATE TABLE "extract".patientrecord
   startdate timestamp without time zone,
   stopdate timestamp without time zone,
   migrated boolean NOT NULL DEFAULT(false),
+  creation_date timestamp without time zone DEFAULT now() NOT NULL,
+  update_date timestamp without time zone,
   CONSTRAINT patientrecord_pkey PRIMARY KEY (pid),
   CONSTRAINT patientrecord_key2 UNIQUE (sendingfacility, sendingextract, localpatientid)
 )
@@ -24,4 +26,16 @@ WITH (
 );
 ALTER TABLE "extract".patientrecord
   OWNER TO ukrdc;
-GRANT ALL PRIVILEGES on TABLE "extract".patientrecord TO ukrdc
+GRANT ALL PRIVILEGES ON TABLE "extract".patientrecord TO ukrdc;
+
+
+ALTER TABLE "extract".patientrecord
+  ALTER COLUMN pid
+  SET DEFAULT nextval('"extract".generate_new_pid')::varchar(30);
+
+ALTER TABLE "extract".patientrecord
+  ALTER COLUMN ukrdcid
+  SET DEFAULT nextval('"extract".generate_new_ukrdcid')::varchar(10);
+
+GRANT SELECT,USAGE ON SEQUENCE "extract".generate_new_pid TO ukrdc;
+GRANT SELECT,USAGE ON SEQUENCE "extract".generate_new_ukrdcid TO ukrdc;

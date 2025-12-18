@@ -49,11 +49,16 @@ CREATE TABLE "extract".transplant
   tra96 character varying(255),
   tra97 character varying(255),
   tra98 character varying(255),
-  CONSTRAINT transplant_pkey PRIMARY KEY (id)
+  creation_date timestamp without time zone DEFAULT now() NOT NULL,
+  update_date timestamp without time zone,
+  CONSTRAINT transplant_pkey PRIMARY KEY (id),
+  CONSTRAINT transplant_pid_fkey
+    FOREIGN KEY (pid)
+    REFERENCES "extract".patientrecord(pid)
 )
 WITH (
   OIDS=FALSE
 );
 ALTER TABLE "extract".transplant
   OWNER TO ukrdc;
-GRANT ALL PRIVILEGES on TABLE "extract".transplant TO ukrdc
+GRANT ALL PRIVILEGES ON TABLE "extract".transplant TO ukrdc;

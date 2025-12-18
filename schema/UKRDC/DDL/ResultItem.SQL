@@ -12,7 +12,7 @@ CREATE TABLE "extract".resultitem
   resultvalue character varying(30),
   resultvalueunits character varying(30),
   referencerange character varying(30),
-  interpretationcodes character varying(100),
+  interpretationcodes character varying(50),
   status character varying(5),
   observationtime timestamp without time zone,
   commenttext character varying(1000),
@@ -22,16 +22,22 @@ CREATE TABLE "extract".resultitem
   updatedon timestamp without time zone,
   actioncode character varying(3),
   externalid character varying(100),
-  CONSTRAINT resultitem_pkey PRIMARY KEY (id)
+  creation_date timestamp without time zone DEFAULT now() NOT NULL,
+  update_date timestamp without time zone,
+  CONSTRAINT resultitem_pkey PRIMARY KEY (id),
+  CONSTRAINT resultitem_orderid_fkey
+    FOREIGN KEY (orderid)
+    REFERENCES "extract".laborder(id)
 )
 WITH (
   OIDS=FALSE
 );
+
 ALTER TABLE "extract".resultitem
   OWNER TO ukrdc;
-GRANT ALL PRIVILEGES on TABLE "extract".resultitem TO ukrdc;
+GRANT ALL PRIVILEGES ON TABLE "extract".resultitem TO ukrdc;
 
 CREATE INDEX resultitem_orderid
-    ON "extract".resultitem USING btree
-    (orderid COLLATE pg_catalog."default")
-    TABLESPACE pg_default;
+  ON "extract".resultitem USING btree
+  (orderid COLLATE pg_catalog."default")
+  TABLESPACE pg_default;

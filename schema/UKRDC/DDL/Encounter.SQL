@@ -31,14 +31,19 @@ CREATE TABLE "extract".encounter
   enteredatcodestd character varying(100),
   enteredatdesc character varying(100),
   visitdescription character varying(100),
-  updatedon timestamp without time zone,
+updatedon timestamp without time zone,
   actioncode character varying(3),
   externalid character varying(100),
-  CONSTRAINT encounter_pkey PRIMARY KEY (id)
+  creation_date timestamp without time zone DEFAULT now() NOT NULL,
+  update_date timestamp without time zone,
+  CONSTRAINT encounter_pkey PRIMARY KEY (id),
+  CONSTRAINT encounter_pid_fkey
+    FOREIGN KEY (pid)
+    REFERENCES "extract".patientrecord(pid)
 )
 WITH (
   OIDS=FALSE
 );
 ALTER TABLE "extract".encounter
   OWNER TO ukrdc;
-GRANT ALL PRIVILEGES on TABLE "extract".encounter TO ukrdc
+GRANT ALL PRIVILEGES ON TABLE "extract".encounter TO ukrdc;
