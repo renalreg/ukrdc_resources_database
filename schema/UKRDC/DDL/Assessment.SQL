@@ -15,7 +15,10 @@ CREATE TABLE "extract".assessment
   assessmentoutcomecode character varying(100),
   assessmentoutcomecodestd character varying(100),
   assessmentoutcomecodedesc character varying(100),
-  CONSTRAINT assessment_pkey PRIMARY KEY (id)
+  CONSTRAINT assessment_pkey PRIMARY KEY (id),
+  CONSTRAINT causeofdeath_pid_fkey
+  FOREIGN KEY (pid)
+  REFERENCES "extract".patientrecord(pid)
 )
 WITH (
   OIDS=FALSE
@@ -23,3 +26,6 @@ WITH (
 ALTER TABLE "extract".assessment
   OWNER TO ukrdc;
 GRANT ALL PRIVILEGES ON TABLE "extract".assessment TO ukrdc;
+
+CREATE INDEX assessment_pid_idx
+  ON "extract".assessment (pid);

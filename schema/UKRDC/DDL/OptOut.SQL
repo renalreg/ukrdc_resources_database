@@ -31,3 +31,6 @@ WITH (
 ALTER TABLE "extract".optout
   OWNER TO ukrdc;
 GRANT ALL PRIVILEGES ON TABLE "extract".optout TO ukrdc;
+
+CREATE INDEX optout_pid_idx
+  ON "extract".optout (pid);

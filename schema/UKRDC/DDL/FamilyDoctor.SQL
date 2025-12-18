@@ -22,7 +22,10 @@ CREATE TABLE "extract".familydoctor
   commenttext character varying(100),
   creation_date timestamp without time zone DEFAULT now() NOT NULL,
   update_date timestamp without time zone,
-  CONSTRAINT familydoctor_pkey PRIMARY KEY (id)
+  CONSTRAINT familydoctor_pkey PRIMARY KEY (id),
+  CONSTRAINT patient_familydoctor_fkey
+    FOREIGN KEY (id)
+    REFERENCES "extract".patientrecord(pid)
 )
 WITH (
   OIDS=FALSE

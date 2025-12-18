@@ -31,7 +31,7 @@ CREATE TABLE "extract".encounter
   enteredatcodestd character varying(100),
   enteredatdesc character varying(100),
   visitdescription character varying(100),
-updatedon timestamp without time zone,
+  updatedon timestamp without time zone,
   actioncode character varying(3),
   externalid character varying(100),
   creation_date timestamp without time zone DEFAULT now() NOT NULL,
@@ -47,3 +47,6 @@ WITH (
 ALTER TABLE "extract".encounter
   OWNER TO ukrdc;
 GRANT ALL PRIVILEGES ON TABLE "extract".encounter TO ukrdc;
+
+CREATE INDEX encounter_pid_idx
+  ON "extract".encounter (pid);

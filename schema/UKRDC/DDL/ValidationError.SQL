@@ -21,3 +21,6 @@ WITH (
 ALTER TABLE "extract".validationerror
   OWNER TO ukrdc;
 GRANT ALL PRIVILEGES ON TABLE "extract".validationerror TO ukrdc;
+
+CREATE INDEX validationerror_pid_idx
+  ON "extract".validationerror (pid);

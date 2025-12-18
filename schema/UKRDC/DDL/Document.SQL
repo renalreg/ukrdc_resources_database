@@ -44,3 +44,6 @@ WITH (
 ALTER TABLE "extract".document
   OWNER TO ukrdc;
 GRANT ALL PRIVILEGES ON TABLE "extract".document TO ukrdc;
+
+CREATE INDEX document_pid_idx
+  ON "extract".document (pid);

@@ -28,3 +28,6 @@ WITH (
 ALTER TABLE "extract".address
   OWNER TO ukrdc;
 GRANT ALL PRIVILEGES ON TABLE "extract".address TO ukrdc;
+
+CREATE INDEX address_pid_idx
+  ON "extract".address (pid);
