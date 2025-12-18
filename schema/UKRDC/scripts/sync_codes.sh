@@ -1,12 +1,10 @@
-apt update
-apt install -y curl
-
 
 echo "Downloading latest lookup codes"
 curl -L -f -o registry_codes.dump https://github.com/renalreg/registry-codes/releases/latest/download/registry_codes.dump
-pg_restore --dbname=$DB_NAME \
+pg_restore --dbname=UKRDC4 \
 --user=postgres \
---clean \
+--schema=extract \
+--data-only \
 --table=code_exclusion \
 --table=code_map \
 --table=facility \
