@@ -34,3 +34,6 @@ WITH (
 ALTER TABLE "extract".procedure
   OWNER TO ukrdc;
 GRANT ALL PRIVILEGES ON TABLE "extract".procedure TO ukrdc;
+
+CREATE INDEX procedure_pid_idx
+  ON "extract".procedure (pid);

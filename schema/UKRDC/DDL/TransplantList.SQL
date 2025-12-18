@@ -48,3 +48,6 @@ WITH (
 ALTER TABLE "extract".transplantlist
   OWNER TO ukrdc;
 GRANT ALL PRIVILEGES ON TABLE "extract".transplantlist TO ukrdc;
+
+CREATE INDEX transplantlist_pid_idx
+  ON "extract".transplantlist (pid);

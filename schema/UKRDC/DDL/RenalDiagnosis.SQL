@@ -32,4 +32,8 @@ WITH (
 
 ALTER TABLE "extract".renaldiagnosis
   OWNER TO ukrdc;
-GRANT ALL PRIVILEGES ON TABLE "extract".renaldiagnosis TO ukrdc;
+GRANT ALL PRIVILEGES ON TABLE "extract".renaldiagnosis TO ukrdc;     
+
+
+CREATE INDEX renaldiagnosis_pid_idx
+  ON "extract".renaldiagnosis (pid)
