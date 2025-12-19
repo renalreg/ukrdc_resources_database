@@ -55,4 +55,7 @@ WITH (
 );
 ALTER TABLE "extract".treatment
   OWNER TO ukrdc;
-GRANT ALL PRIVILEGES ON TABLE "extract".treatment TO ukrdc;
+GRANT ALL PRIVILEGES ON TABLE "extract".treatment TO ukrdc; 
+
+CREATE INDEX treatment_pid_idx
+  ON "extract".treatment (pid);

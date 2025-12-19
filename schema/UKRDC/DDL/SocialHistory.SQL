@@ -24,3 +24,7 @@ WITH (
 ALTER TABLE "extract".socialhistory
   OWNER TO ukrdc;
 GRANT ALL PRIVILEGES ON TABLE "extract".socialhistory TO ukrdc;
+
+
+CREATE INDEX socialhistory_pid_idx
+  ON "extract".socialhistory (pid)
