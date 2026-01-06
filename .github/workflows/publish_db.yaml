@@ -69,7 +69,7 @@ jobs:
           #!/bin/bash
           set -e
           psql -v ON_ERROR_STOP=1 --username "\$POSTGRES_USER" --dbname "\$POSTGRES_DB" -c 'CREATE DATABASE "UKRDC4";'
-          pg_restore -v --username "\$POSTGRES_USER" --dbname "UKRDC4" /ukrdc_database.dump || true
+          pg_restore -v --username "\$POSTGRES_USER" --dbname "UKRDC" /ukrdc_database.dump || true
           EOF
           
           # Create Dockerfile
