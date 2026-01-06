@@ -10,7 +10,7 @@ jobs:
 
     services:
       postgres:
-        image: postgres:latest
+        image: postgres:16
         env:
           POSTGRES_DB: postgres
           POSTGRES_USER: postgres
@@ -68,7 +68,7 @@ jobs:
           cat <<EOF > restore_db.sh
           #!/bin/bash
           set -e
-          psql -v ON_ERROR_STOP=1 --username "\$POSTGRES_USER" --dbname "\$POSTGRES_DB" -c 'CREATE DATABASE "UKRDC4";'
+          psql -v ON_ERROR_STOP=1 --username "\$POSTGRES_USER" --dbname "\$POSTGRES_DB" -c 'CREATE DATABASE "UKRDC";'
           pg_restore -v --username "\$POSTGRES_USER" --dbname "UKRDC" /ukrdc_database.dump || true
           EOF
           
