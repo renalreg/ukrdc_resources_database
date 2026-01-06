@@ -60,7 +60,7 @@ jobs:
 
       - name: Dump database
         run: |
-          pg_dump -h localhost -p 5432 -U postgres -d UKRDC4 -Fc -f ukrdc_database.dump
+          pg_dump -h localhost -p 5432 -U postgres -d UKRDC -Fc -f ukrdc_database.dump
 
       - name: Build Docker Image
         run: |
