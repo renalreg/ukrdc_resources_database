@@ -62,7 +62,7 @@ jobs:
         run: |
           pg_dump -h localhost -p 5432 -U postgres -d UKRDC4 -Fc -f ukrdc_database.dump
 
-     - name: Build Docker Image
+      - name: Build Docker Image
         run: |
           # Create restore script
           cat <<EOF > restore_db.sh
