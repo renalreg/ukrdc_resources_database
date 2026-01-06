@@ -2,7 +2,7 @@
 \c postgres
 
 -- drop and rebuild the database
-\i ../DDL/UKRDC4.DDL
+\i ../DDL/UKRDC.DDL
 
 -- set search path for this session 
 SET search_path TO "$user",extract;
