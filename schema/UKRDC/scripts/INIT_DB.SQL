@@ -8,7 +8,7 @@
 SET search_path TO "$user",extract;
 
 -- build the tables
-\i ../SCRIPTS/REBUILD_ALL_TABLES.DDL
+\i ../scripts/REBUILD_ALL_TABLES.DDL
 
 -- build the views
-\i ../SCRIPTS/REBUILD_ALL_VIEWS.DDL
+\i ../scripts/REBUILD_ALL_VIEWS.DDL
