@@ -52,8 +52,8 @@ jobs:
           psql -v ON_ERROR_STOP=1 -U postgres -d postgres -f INIT_DB.SQL
       - name: Run sync_codes.sh
         run: |
-          apt update
-          apt install -y curl
+          sudo apt update
+          sudo apt install -y curl
           cd schema/UKRDC/scripts
           chmod +x sync_codes.sh
           sh sync_codes.sh
