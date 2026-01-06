@@ -15,7 +15,12 @@ CREATE TABLE "extract".address
   countrycode character varying(100),
   countrycodestd character varying(100),
   countrydesc character varying(100),
-  CONSTRAINT address_pkey PRIMARY KEY (id)
+  creation_date timestamp without time zone DEFAULT now() NOT NULL,
+  update_date timestamp without time zone,
+  CONSTRAINT address_pkey PRIMARY KEY (id),
+  CONSTRAINT causeofdeath_pid_fkey
+  FOREIGN KEY (pid)
+  REFERENCES "extract".patientrecord(pid)
 )
 WITH (
   OIDS=FALSE
@@ -23,3 +28,6 @@ WITH (
 ALTER TABLE "extract".address
   OWNER TO ukrdc;
 GRANT ALL PRIVILEGES ON TABLE "extract".address TO ukrdc;
+
+CREATE INDEX address_pid_idx
+  ON "extract".address (pid);

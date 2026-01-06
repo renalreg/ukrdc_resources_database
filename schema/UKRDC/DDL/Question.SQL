@@ -9,7 +9,9 @@ CREATE TABLE "extract".question
   questiontypecodestd character varying(100),
   questiontypedesc character varying(100),
   response character varying(100),
-  questiontext character varying(200),
+  questiontext character varying(100),
+  creation_date timestamp without time zone DEFAULT now() NOT NULL,
+  update_date timestamp without time zone,
   CONSTRAINT question_pkey PRIMARY KEY (id)
 )
 WITH (
@@ -17,4 +19,4 @@ WITH (
 );
 ALTER TABLE "extract".question
   OWNER TO ukrdc;
-GRANT ALL PRIVILEGES on TABLE "extract".question TO ukrdc
+GRANT ALL PRIVILEGES ON TABLE "extract".question TO ukrdc;

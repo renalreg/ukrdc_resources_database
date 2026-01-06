@@ -20,11 +20,16 @@ CREATE TABLE "extract".familydoctor
   contactvalue character varying(100),
   email character varying(100),
   commenttext character varying(100),
-  CONSTRAINT familydoctor_pkey PRIMARY KEY (id)
+  creation_date timestamp without time zone DEFAULT now() NOT NULL,
+  update_date timestamp without time zone,
+  CONSTRAINT familydoctor_pkey PRIMARY KEY (id),
+  CONSTRAINT patient_familydoctor_fkey
+    FOREIGN KEY (id)
+    REFERENCES "extract".patientrecord(pid)
 )
 WITH (
   OIDS=FALSE
 );
 ALTER TABLE "extract".familydoctor
   OWNER TO ukrdc;
-GRANT ALL PRIVILEGES on TABLE "extract".familydoctor TO ukrdc
+GRANT ALL PRIVILEGES ON TABLE "extract".familydoctor TO ukrdc;

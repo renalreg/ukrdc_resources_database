@@ -28,23 +28,31 @@ CREATE TABLE "extract".medication
   drugproductstrengthunitscode character varying(100),
   drugproductstrengthunitscodestd character varying(100),
   drugproductstrengthunitsdesc character varying(100),
-  frequency character varying(50),
+  frequency character varying(255),
   commenttext character varying(1000),
   dosequantity numeric(19,2),
   doseuomcode character varying(100),
   doseuomcodestd character varying(100),
   doseuomdesc character varying(100),
   indication character varying(100),
-  encounternumber character varying(100),
   repositoryupdatedate timestamp without time zone NOT NULL,
   updatedon timestamp without time zone,
   actioncode character varying(3),
   externalid character varying(100),
-  CONSTRAINT medication_pkey PRIMARY KEY (id)
+  creation_date timestamp without time zone DEFAULT now() NOT NULL,
+  update_date timestamp without time zone,
+  encounternumber character varying(100),
+  CONSTRAINT medication_pkey PRIMARY KEY (id),
+  CONSTRAINT medication_pid_fkey
+    FOREIGN KEY (pid)
+    REFERENCES "extract".patientrecord(pid)
 )
 WITH (
   OIDS=FALSE
 );
 ALTER TABLE "extract".medication
   OWNER TO ukrdc;
-GRANT ALL PRIVILEGES on TABLE "extract".medication TO ukrdc;
+GRANT ALL PRIVILEGES ON TABLE "extract".medication TO ukrdc;
+
+CREATE INDEX medication_pid_idx
+  ON "extract".medication (pid);

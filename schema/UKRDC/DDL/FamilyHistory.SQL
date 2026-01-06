@@ -20,11 +20,16 @@ CREATE TABLE "extract".familyhistory
   updatedon timestamp without time zone,
   actioncode character varying(3),
   externalid character varying(100),
-  CONSTRAINT familyhistory_pkey PRIMARY KEY (id)
+  creation_date timestamp without time zone DEFAULT now() NOT NULL,
+  update_date timestamp without time zone,
+  CONSTRAINT familyhistory_pkey PRIMARY KEY (id),
+  CONSTRAINT familyhistory_pid_fkey
+    FOREIGN KEY (pid)
+    REFERENCES "extract".patientrecord(pid)
 )
 WITH (
   OIDS=FALSE
 );
 ALTER TABLE "extract".familyhistory
   OWNER TO ukrdc;
-GRANT ALL PRIVILEGES on TABLE "extract".familyhistory TO ukrdc
+GRANT ALL PRIVILEGES ON TABLE "extract".familyhistory TO ukrdc;

@@ -6,11 +6,16 @@ CREATE TABLE "extract".pvdelete
   pid character varying(30) NOT NULL,
   observationtime timestamp without time zone,
   serviceidcode character varying(100),
-  CONSTRAINT pvdelete_pkey PRIMARY KEY (did)
+  creation_date timestamp without time zone DEFAULT now() NOT NULL,
+  update_date timestamp without time zone,
+  CONSTRAINT pvdelete_pkey PRIMARY KEY (did),
+  CONSTRAINT pvdelete_pid_fkey
+    FOREIGN KEY (pid)
+    REFERENCES "extract".patientrecord(pid)
 )
 WITH (
   OIDS=FALSE
 );
 ALTER TABLE "extract".pvdelete
-OWNER TO ukrdc;
-GRANT ALL PRIVILEGES on TABLE "extract".pvdelete TO ukrdc
+  OWNER TO ukrdc;
+GRANT ALL PRIVILEGES ON TABLE "extract".pvdelete TO ukrdc;
