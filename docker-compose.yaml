@@ -1,0 +1,24 @@
+services:
+  postgres:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ukrdc-postgres-build
+    ports:
+      - "8000:5432"
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - ./pg_data:/var/lib/postgresql
+      - ./schema/UKRDC/DDL:/DDL:ro
+      - ./schema/UKRDC/views:/views:ro
+      - ./schema/UKRDC/scripts:/scripts:ro
+      - ./schema/UKRDC/scripts/INIT_DB.SQL:/docker-entrypoint-initdb.d/01-init_db.sql:ro
+      - ./schema/UKRDC/scripts/sync_codes.sh:/docker-entrypoint-initdb.d/02-sync_codes.sh:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d UKRDC"]
+      interval: 10s
+      timeout: 5s
+      retries: 10

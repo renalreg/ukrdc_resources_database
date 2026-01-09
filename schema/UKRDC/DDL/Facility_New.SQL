@@ -5,7 +5,8 @@ CREATE TYPE "extract".facility_type_enum AS ENUM (
   'Paediatric Renal Centre',
   'Multiple Centre',
   'Satellite',
-  'Non‑Renal Unit'
+  'Non‑Renal Unit',
+  'Other'
 );
 
 ALTER TYPE "extract".facility_type_enum

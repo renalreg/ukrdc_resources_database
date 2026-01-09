@@ -9,7 +9,8 @@ CREATE TABLE "extract".rr_codes
   description_3 character varying(60),
   old_value character varying(10),
   old_value_2 character varying(10),
-  CONSTRAINT rr_codes_pkey PRIMARY KEY (id)
+  new_value character varying(10),
+  CONSTRAINT rr_codes_pkey PRIMARY KEY (id, rr_code)
 )
 WITH (
   OIDS=FALSE
