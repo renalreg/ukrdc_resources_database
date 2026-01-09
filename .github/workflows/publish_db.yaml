@@ -15,61 +15,30 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v4
 
-      - name: Log in to GitHub Container Registry
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Build Docker image
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          push: false
-          tags: ghcr.io/${{ github.repository }}:build-temp
-          load: true
-
       - name: Start database container
         run: |
-          docker compose up -d
-          docker compose exec -T postgres bash -c '
-            until pg_isready -U postgres -d UKRDC; do
-              echo "Waiting for database to be ready..."
-              sleep 2
-            done
-          '
+          docker compose up -d --build
 
       - name: Create PostgreSQL dump
         run: |
           docker compose exec -T postgres pg_dump -U postgres -d UKRDC -Fc > ukrdc_database.dump
 
-      - name: Commit initialized container to new image
-        run: |
-          docker commit ukrdc-postgres-build ghcr.io/${{ github.repository }}:initialized-temp
-
-      - name: Extract metadata for initialized image
-        id: meta-initialized
-        uses: docker/metadata-action@v5
-        with:
-          images: ghcr.io/${{ github.repository }}
-          tags: |
-            type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
-            type=semver,pattern={{major}}
-            type=raw,value=latest
-
-      - name: Stop database container
-        run: docker compose down
-
-      - name: Tag and push initialized image
-        run: |
-          echo "${{ steps.meta-initialized.outputs.tags }}" | while read tag; do
-            docker tag ghcr.io/${{ github.repository }}:initialized-temp "$tag"
-            docker push "$tag"
-          done
-
       - name: Attach dump to release
         uses: softprops/action-gh-release@v2
         with:
           files: ukrdc_database.dump
+
+      - name: Commit and tag running container
+        run: |
+          docker commit ukrdc-postgres ghcr.io/${{ github.repository }}:initialized
+          docker tag ghcr.io/${{ github.repository }}:initialized ghcr.io/${{ github.repository }}:latest
+
+      - name: Push to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          docker push ghcr.io/${{ github.repository }}:initialized
+          docker push ghcr.io/${{ github.repository }}:latest
