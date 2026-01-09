@@ -17,4 +17,25 @@ jobs:
 
       - name: Start database container
         run: |
-          docker compose up --build
+          docker compose up -d --build
+          echo "Waiting for database initialization..."
+          until docker compose logs postgres 2>&1 | grep -q "Sync complete"; do
+            sleep 2
+          done
+          echo "Database ready"
+          docker compose logs postgres
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Commit and push image
+        run: |
+          docker commit ukrdc-postgres-build ghcr.io/${{ github.repository }}:latest
+          docker push ghcr.io/${{ github.repository }}:latest
+
+      - name: Stop container
+        run: docker compose down
