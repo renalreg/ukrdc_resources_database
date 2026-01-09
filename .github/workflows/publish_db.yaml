@@ -55,6 +55,28 @@ jobs:
         run: |
           docker compose exec -T postgres pg_dump -U postgres -d UKRDC -Fc > ukrdc_database.dump
 
+      - name: Commit initialized container to new image
+        run: |
+          docker commit ukrdc-postgres-build ghcr.io/${{ github.repository }}:initialized-temp
+
+      - name: Extract metadata for initialized image
+        id: meta-initialized
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/${{ github.repository }}
+          tags: |
+            type=semver,pattern={{version}},suffix=-initialized
+            type=semver,pattern={{major}}.{{minor}},suffix=-initialized
+            type=semver,pattern={{major}},suffix=-initialized
+            type=raw,value=initialized
+
+      - name: Tag and push initialized image
+        run: |
+          for tag in ${{ steps.meta-initialized.outputs.tags }}; do
+            docker tag ghcr.io/${{ github.repository }}:initialized-temp $tag
+            docker push $tag
+          done
+
       - name: Stop database container
         run: docker compose down
 
