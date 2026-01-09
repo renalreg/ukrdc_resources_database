@@ -19,9 +19,7 @@ jobs:
         run: |
           docker compose up -d --build
           echo "Waiting for database initialization..."
-          until docker compose logs postgres 2>&1 | grep -q "Sync complete"; do
-            sleep 2
-          done
+          timeout 300 bash -c 'until docker compose logs postgres 2>&1 | grep -q "Sync complete"; do sleep 5; done'
           echo "Database ready"
           docker compose logs postgres
 
