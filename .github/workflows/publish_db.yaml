@@ -75,10 +75,9 @@ jobs:
 
       - name: Tag and push initialized image
         run: |
-          TAGS="${{ steps.meta-initialized.outputs.tags }}"
-          for tag in $TAGS; do
-            docker tag ghcr.io/${{ github.repository }}:initialized-temp $tag
-            docker push $tag
+          echo "${{ steps.meta-initialized.outputs.tags }}" | while read tag; do
+            docker tag ghcr.io/${{ github.repository }}:initialized-temp "$tag"
+            docker push "$tag"
           done
 
       - name: Attach dump to release
