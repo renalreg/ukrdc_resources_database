@@ -35,5 +35,14 @@ jobs:
           docker commit ukrdc-postgres-build ghcr.io/${{ github.repository }}:latest
           docker push ghcr.io/${{ github.repository }}:latest
 
+      - name: Dump database
+        run: |
+          docker compose exec -T postgres pg_dump -U postgres -d UKRDC -Fc > ukrdc_database.dump
+
+      - name: Attach dump to release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: ukrdc_database.dump
+
       - name: Stop container
         run: docker compose down
