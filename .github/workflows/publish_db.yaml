@@ -1,91 +1,64 @@
-name: Build and attach DB dump
+name: Build and publish UKRDC database
 
 on:
   release:
     types: [created]
 
 jobs:
-  build-db-dump:
+  build-and-publish:
     runs-on: ubuntu-latest
-
-    services:
-      postgres:
-        image: postgres:16
-        env:
-          POSTGRES_DB: postgres
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd="pg_isready -U postgres -d ukrdc"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=10
-
-    env:
-      PGHOST: localhost
-      PGPORT: 5432
-      PGUSER: postgres
-      PGPASSWORD: postgres
-      PGDATABASE: postgres
+    permissions:
+      contents: write
+      packages: write
 
     steps:
       - name: Check out code
         uses: actions/checkout@v4
 
-      - name: Wait for Postgres
-        run: |
-          for i in {1..30}; do
-            if pg_isready -h "$PGHOST" -p "$PGPORT" -U "$PGUSER" -d "$PGDATABASE"; then
-              exit 0
-            fi
-            echo "Postgres not ready yet... ($i)"
-            sleep 2
-          done
-          echo "Postgres did not become ready in time"
-          exit 1
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Run INIT_DB.SQL
-        run: |
-          cd schema/UKRDC/scripts
-          psql -v ON_ERROR_STOP=1 -U postgres -d postgres -f INIT_DB.SQL
-      - name: Run sync_codes.sh
-        run: |
-          sudo apt update
-          sudo apt install -y curl
-          cd schema/UKRDC/scripts
-          chmod +x sync_codes.sh
-          sh sync_codes.sh
+      - name: Extract metadata for Docker
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/${{ github.repository }}
+          tags: |
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=semver,pattern={{major}}
+            type=raw,value=latest
 
-      - name: Dump database
-        run: |
-          pg_dump -h localhost -p 5432 -U postgres -d UKRDC -Fc -f ukrdc_database.dump
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
 
-      - name: Build Docker Image
+      - name: Start database container
         run: |
-          # Create restore script
-          cat <<EOF > restore_db.sh
-          #!/bin/bash
-          set -e
-          psql -v ON_ERROR_STOP=1 --username "\$POSTGRES_USER" --dbname "\$POSTGRES_DB" -c 'CREATE DATABASE "UKRDC";'
-          pg_restore -v --username "\$POSTGRES_USER" --dbname "UKRDC" /ukrdc_database.dump || true
-          EOF
-          
-          # Create Dockerfile
-          cat <<EOF > Dockerfile
-          FROM postgres:latest
-          COPY ukrdc_database.dump /
-          COPY restore_db.sh /docker-entrypoint-initdb.d/
-          EOF
-          
-          # Build and save
-          docker build -t ukrdc-postgres:latest .
-          docker save ukrdc-postgres:latest | gzip > ukrdc-postgres-image.tar.gz
+          docker compose up -d
+          docker compose exec -T postgres bash -c '
+            until pg_isready -U postgres -d UKRDC; do
+              echo "Waiting for database to be ready..."
+              sleep 2
+            done
+          '
+
+      - name: Create PostgreSQL dump
+        run: |
+          docker compose exec -T postgres pg_dump -U postgres -d UKRDC -Fc > ukrdc_database.dump
+
+      - name: Stop database container
+        run: docker compose down
 
       - name: Attach dump to release
         uses: softprops/action-gh-release@v2
         with:
-          files: |
-            ukrdc_database.dump
-            ukrdc-postgres-image.tar.gz
+          files: ukrdc_database.dump
