@@ -6,11 +6,6 @@ set -eo pipefail
 # ===========================
 # Configuration
 # ===========================
-
-# Sentry cron monitoring update if needed
-SENTRY_INGEST=""
-SENTRY_CRONS=""
-
 DB_NAME=""
 DB_USER=""
 DB_PASSWORD=""
@@ -24,23 +19,24 @@ LOG_FILE="/var/log/registry_codes_sync_codes.log"
 
 export PGPASSWORD="$DB_PASSWORD"
 
-# One check-in id, generated up front, reused for every ping this run.
-RID=$(uuidgen)
-
 # ===========================
 # Sentry: start + trap
 # ===========================
 
-curl -sS -m 10 "${SENTRY_CRONS}?status=in_progress&check_in_id=${RID}" >/dev/null || true
-
-# On every exit path: clean temp files, report terminal status, preserve exit code.
-trap '
-  exit_code=$?
-  status=$( [ "$exit_code" -eq 0 ] && echo ok || echo error )
-  rm -f "$TMP_DUMP" "$TMP_SQL"
-  curl -sS -m 10 "${SENTRY_CRONS}?status=${status}&check_in_id=${RID}" >/dev/null || true
-  exit "$exit_code"
-' EXIT
+# Uncomment and put sentry valuse for sentry monitoring
+# SENTRY_INGEST="****"
+# SENTRY_CRONS="${SENTRY_INGEST}/api/****/"
+# RID=$(uuidgen)
+# curl -sS -m 10 "${SENTRY_CRONS}?status=in_progress&check_in_id=${RID}" >/dev/null || true
+#
+# # On every exit path: clean temp files, report terminal status, preserve exit code.
+# trap '
+#   exit_code=$?
+#   status=$( [ "$exit_code" -eq 0 ] && echo ok || echo error )
+#   rm -f "$TMP_DUMP" "$TMP_SQL"
+#   curl -sS -m 10 "${SENTRY_CRONS}?status=${status}&check_in_id=${RID}" >/dev/null || true
+#   exit "$exit_code"
+# ' EXIT
 
 # ===========================
 # Work
