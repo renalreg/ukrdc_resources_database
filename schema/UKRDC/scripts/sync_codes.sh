@@ -24,17 +24,22 @@ export PGPASSWORD="$DB_PASSWORD"
 # ===========================
 
 # Uncomment and put sentry valuse for sentry monitoring
+#  if [[ $(hostname) == *live* ]]; then
+#    ENVIRONMENT="live"
+#  else
+#     ENVIRONMENT="staging"
+# fi
 # SENTRY_INGEST="****"
 # SENTRY_CRONS="${SENTRY_INGEST}/api/****/"
 # RID=$(uuidgen)
-# curl -sS -m 10 "${SENTRY_CRONS}?status=in_progress&check_in_id=${RID}" >/dev/null || true
+# curl -sS -m 10 "${SENTRY_CRONS}?status=in_progress&environment=${ENVIRONMENT}&check_in_id=${RID}" >/dev/null || true
 #
 # # On every exit path: clean temp files, report terminal status, preserve exit code.
 # trap '
 #   exit_code=$?
 #   status=$( [ "$exit_code" -eq 0 ] && echo ok || echo error )
 #   rm -f "$TMP_DUMP" "$TMP_SQL"
-#   curl -sS -m 10 "${SENTRY_CRONS}?status=${status}&check_in_id=${RID}" >/dev/null || true
+#   curl -sS -m 10 "${SENTRY_CRONS}?status=${status}&environment=${ENVIRONMENT}&check_in_id=${RID}" >/dev/null || true
 #   exit "$exit_code"
 # ' EXIT
 
