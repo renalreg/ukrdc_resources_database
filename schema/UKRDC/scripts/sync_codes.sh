@@ -63,7 +63,6 @@ export PGPASSWORD="$DB_PASSWORD"
     --table=code_list \
     --table=code_map \
     --table=coding_standards \
-    --table=facility_new \
     --table=modality_codes \
     --table=rr_codes \
     --table=rr_data_definition \
@@ -78,7 +77,6 @@ export PGPASSWORD="$DB_PASSWORD"
     -U "$DB_USER" -h "$DB_HOST" -p "$DB_PORT" -d "$DB_NAME" <<SQL
 DELETE FROM extract.code_exclusion;
 DELETE FROM extract.ukrdc_ods_gp_codes;
-DELETE FROM extract.facility_new;
 DELETE FROM extract.coding_standards;
 DELETE FROM extract.code_list;
 DELETE FROM extract.code_map;
