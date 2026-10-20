@@ -20,6 +20,8 @@ ALTER TABLE "extract".eventcontrol
 GRANT ALL PRIVILEGES on TABLE "extract".eventcontrol TO ukrdc;
 
 INSERT INTO "extract".eventcontrol(eventtype, eventdate)
+    VALUES ('PKBEXTRACT',TIMESTAMP '1970-01-01 00:00:00');
+INSERT INTO "extract".eventcontrol(eventtype, eventdate)
 	VALUES ('PVEXTRACT',TIMESTAMP '1970-01-01 00:00:00');
 INSERT INTO "extract".eventcontrol(eventtype, eventdate)
 	VALUES ('PVSURVEYEXTRACT',TIMESTAMP '1970-01-01 00:00:00');
