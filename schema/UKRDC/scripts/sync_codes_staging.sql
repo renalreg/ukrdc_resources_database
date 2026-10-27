@@ -3,13 +3,13 @@
 -- so any error rolls back everything.
 -- :tmp_sql is the plain-SQL data file made by pg_restore.
 --
--- facility_new is not synced but has fk_facilitycode to code_list
+-- facility is not synced but has fk_facilitycode to code_list
 -- (ON DELETE RESTRICT), which blocks emptying code_list. Drop it inside the
--- transaction and re-add it after the reload. Re-adding checks every facility_new
+-- transaction and re-add it after the reload. Re-adding checks every facility
 -- row, so a release missing a code still in use fails and rolls back.
 
 SET LOCAL lock_timeout = '10s';
-ALTER TABLE extract.facility_new DROP CONSTRAINT fk_facilitycode;
+ALTER TABLE extract.facility DROP CONSTRAINT fk_facilitycode;
 
 DELETE FROM extract.code_exclusion;
 DELETE FROM extract.ukrdc_ods_gp_codes;
@@ -23,7 +23,7 @@ DELETE FROM extract.locations;
 
 \i :tmp_sql
 
-ALTER TABLE extract.facility_new ADD CONSTRAINT fk_facilitycode
+ALTER TABLE extract.facility ADD CONSTRAINT fk_facilitycode
   FOREIGN KEY (facilitycode, facilitycodestd)
   REFERENCES extract.code_list (code, coding_standard)
   ON UPDATE CASCADE ON DELETE RESTRICT;
