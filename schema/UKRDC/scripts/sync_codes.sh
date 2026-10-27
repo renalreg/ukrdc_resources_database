@@ -8,7 +8,7 @@ echo "Clearing existing lookup data"
 psql -U postgres -d UKRDC <<'SQL'
 DELETE FROM extract.code_exclusion;
 DELETE FROM extract.code_map;
-DELETE FROM extract.facility_new;
+DELETE FROM extract.facility;
 DELETE FROM extract.modality_codes;
 DELETE FROM extract.rr_codes;
 DELETE FROM extract.rr_data_definition;
@@ -22,7 +22,7 @@ pg_restore --dbname=UKRDC \
 --data-only \
 --table=code_exclusion \
 --table=code_map \
---table=facility_new \
+--table=facility \
 --table=modality_codes \
 --table=rr_codes \
 --table=rr_data_definition \

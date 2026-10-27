@@ -15,7 +15,6 @@
 \i ../DDL/Encounter.SQL
 \i ../DDL/EventControl.SQL
 \i ../DDL/Facility.SQL
-\i ../DDL/Facility_New.SQL
 \i ../DDL/FamilyDoctor.SQL
 \i ../DDL/FamilyHistory.SQL
 \i ../DDL/LabOrder.SQL
