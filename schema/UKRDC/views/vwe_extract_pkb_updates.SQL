@@ -7,17 +7,17 @@ SELECT
 FROM patientrecord
 -- Require PKB Membership
 INNER JOIN vwe_pkb_members ON patientrecord.ukrdcid = vwe_pkb_members.ukrdcid
-INNER JOIN facility ON patientrecord.sendingfacility = facility.code
+INNER JOIN facility ON patientrecord.sendingfacility = facility.facilitycode
 WHERE
 	(
 		(
 			patientrecord.sendingextract = 'UKRDC' AND
-			facility.ukrdc_out_pkb = TRUE
+			facility.ukrdcoutpkb = TRUE
 		)
 		OR
 		(
 			patientrecord.sendingextract = 'PV' AND
-			facility.pv_out_pkb = TRUE
+			facility.pvoutpkb = TRUE
 		)
 	)
     AND
@@ -97,17 +97,17 @@ FROM patientrecord
 LEFT JOIN pvdata ON patientrecord.pid = pvdata.id
 -- Require PKB Membership
 INNER JOIN vwe_pkb_members ON patientrecord.ukrdcid = vwe_pkb_members.ukrdcid
-INNER JOIN facility ON patientrecord.sendingfacility = facility.code
+INNER JOIN facility ON patientrecord.sendingfacility = facility.facilitycode
 WHERE
 	(
 		(
 			patientrecord.sendingextract = 'UKRDC' AND
-			facility.ukrdc_out_pkb = TRUE
+			facility.ukrdcoutpkb = TRUE
 		)
 		OR
 		(
 			patientrecord.sendingextract = 'PV' AND
-			facility.pv_out_pkb = TRUE
+			facility.pvoutpkb = TRUE
 		)
 	)
     AND
@@ -190,17 +190,17 @@ FROM document
 INNER JOIN patientrecord ON document.pid = patientrecord.pid
 -- Require PKB Membership
 INNER JOIN vwe_pkb_members ON patientrecord.ukrdcid = vwe_pkb_members.ukrdcid
-INNER JOIN facility ON patientrecord.sendingfacility = facility.code
+INNER JOIN facility ON patientrecord.sendingfacility = facility.facilitycode
 WHERE
 	(
 		(
 			patientrecord.sendingextract = 'UKRDC' AND
-			facility.ukrdc_out_pkb = TRUE
+			facility.ukrdcoutpkb = TRUE
 		)
 		OR
 		(
 			patientrecord.sendingextract = 'PV' AND
-			facility.pv_out_pkb = TRUE
+			facility.pvoutpkb = TRUE
 		)
 	)
     AND
@@ -229,17 +229,17 @@ FROM laborder
 INNER JOIN patientrecord ON laborder.pid = patientrecord.pid
 -- Require PKB Membership
 INNER JOIN vwe_pkb_members ON patientrecord.ukrdcid = vwe_pkb_members.ukrdcid
-INNER JOIN facility ON patientrecord.sendingfacility = facility.code
+INNER JOIN facility ON patientrecord.sendingfacility = facility.facilitycode
 WHERE
 	(
 		(
 			patientrecord.sendingextract = 'UKRDC' AND
-			facility.ukrdc_out_pkb = TRUE
+			facility.ukrdcoutpkb = TRUE
 		)
 		OR
 		(
 			patientrecord.sendingextract = 'PV' AND
-			facility.pv_out_pkb = TRUE
+			facility.pvoutpkb = TRUE
 		)
 	)
     AND
@@ -274,17 +274,17 @@ FROM observation
 INNER JOIN patientrecord ON observation.pid = patientrecord.pid
 -- Require PKB Membership
 INNER JOIN vwe_pkb_members ON patientrecord.ukrdcid = vwe_pkb_members.ukrdcid
-INNER JOIN facility ON patientrecord.sendingfacility = facility.code
+INNER JOIN facility ON patientrecord.sendingfacility = facility.facilitycode
 WHERE
 	(
 		(
 			patientrecord.sendingextract = 'UKRDC' AND
-			facility.ukrdc_out_pkb = TRUE
+			facility.ukrdcoutpkb = TRUE
 		)
 		OR
 		(
 			patientrecord.sendingextract = 'PV' AND
-			facility.pv_out_pkb = TRUE
+			facility.pvoutpkb = TRUE
 		)
 	)
     AND

@@ -27,10 +27,10 @@ CREATE MATERIALIZED VIEW "extract".vwe_facility_relationship AS
      ) THEN 'DEPRECATED-CURRENT'::text
      ELSE NULL::text
    END AS relationshiptype
- FROM "extract".facility_new f1
+ FROM "extract".facility f1
  JOIN "extract".code_map cm
    ON (f1.facilitycode)::text = (cm.source_code)::text
- JOIN "extract".facility_new f2
+ JOIN "extract".facility f2
    ON (f2.facilitycode)::text = (cm.destination_code)::text
  WHERE (cm.source_coding_standard)::text = ANY (
    ARRAY[

@@ -1,14 +1,37 @@
 -- Table: "extract".facility
 
-CREATE TABLE "extract".facility (
-    code               varchar(256) CONSTRAINT pk_facility PRIMARY KEY,
-    pkb_out            BOOLEAN default false,
-    pkb_in             BOOLEAN default false,
-	ukrdc_out_pkb	   BOOLEAN default false,
-	pv_out_pkb		   BOOLEAN default false,
-    pkb_msg_exclusions TEXT []
+CREATE TYPE "extract".facility_type_enum AS ENUM (
+  'Adult Renal Centre',
+  'Paediatric Renal Centre',
+  'Multiple Centre',
+  'Satellite',
+  'Non‑Renal Unit',
+  'Other'
+);
+
+ALTER TYPE "extract".facility_type_enum
+  OWNER TO ukrdc;
+
+CREATE TABLE "extract".facility
+(
+  facilitycode character varying(100) NOT NULL,
+  facilitycodestd character varying(100) NOT NULL,
+  facilitytype "extract".facility_type_enum NOT NULL,
+  pkbout boolean DEFAULT false NOT NULL,
+  pkbmsgexclusions text[],
+  ukrdcoutpkb boolean DEFAULT false NOT NULL,
+  pvoutpkb boolean DEFAULT false NOT NULL,
+  startdate timestamp(6) without time zone,
+  enddate timestamp(6) without time zone,
+  firstdataquarter integer,
+  pkboutstartdate timestamp(6) without time zone,
+  creation_date timestamp without time zone DEFAULT now() NOT NULL,
+  update_date timestamp without time zone DEFAULT now() NOT NULL
+)
+WITH (
+  OIDS=FALSE
 );
 
 ALTER TABLE "extract".facility
   OWNER TO ukrdc;
-GRANT ALL PRIVILEGES ON TABLE extract. facility TO ukrdc;
+GRANT ALL PRIVILEGES ON TABLE "extract".facility TO ukrdc;
