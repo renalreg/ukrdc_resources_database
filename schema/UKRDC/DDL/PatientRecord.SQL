@@ -27,3 +27,6 @@ WITH (
 ALTER TABLE "extract".patientrecord
   OWNER TO ukrdc;
 GRANT ALL PRIVILEGES ON TABLE "extract".patientrecord TO ukrdc;
+
+CREATE INDEX ix_patientrecord_ukrdcid
+  ON "extract".patientrecord (ukrdcid);

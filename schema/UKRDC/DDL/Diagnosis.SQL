@@ -40,5 +40,8 @@ ALTER TABLE "extract".diagnosis
   OWNER TO ukrdc;
 GRANT ALL PRIVILEGES ON TABLE "extract".diagnosis TO ukrdc;
 
-CREATE INDEX diagnosis_pid_idx
+CREATE INDEX ix_diagnosis_pid
   ON "extract".diagnosis (pid);
+
+CREATE INDEX idx_diagnosis_pid_diagnosiscode
+  ON "extract".diagnosis (pid, diagnosiscode);

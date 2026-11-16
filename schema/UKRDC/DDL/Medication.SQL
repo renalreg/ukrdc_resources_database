@@ -54,5 +54,8 @@ ALTER TABLE "extract".medication
   OWNER TO ukrdc;
 GRANT ALL PRIVILEGES ON TABLE "extract".medication TO ukrdc;
 
-CREATE INDEX medication_pid_idx
+CREATE INDEX ix_medication_pid
   ON "extract".medication (pid);
+
+CREATE INDEX idx_medication_pid_fromtime_totime
+  ON "extract".medication (pid, fromtime, totime);

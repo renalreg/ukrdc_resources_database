@@ -25,4 +25,11 @@ ALTER TABLE "extract".patientnumber
   OWNER TO ukrdc;
 GRANT ALL PRIVILEGES ON TABLE "extract".patientnumber TO ukrdc;
 
-CREATE INDEX patientnumber_patientid ON "extract".patientnumber (patientid);
+CREATE INDEX ix_patientnumber_pid
+  ON "extract".patientnumber (pid);
+
+CREATE INDEX ix_patientnumber_patientid
+  ON "extract".patientnumber (patientid);
+
+CREATE INDEX idx_patientnumber_pid_numbertype_organization
+  ON "extract".patientnumber (pid, numbertype, organization);

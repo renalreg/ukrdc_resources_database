@@ -25,5 +25,5 @@ ALTER TABLE "extract".contactdetail
   OWNER TO ukrdc;
 GRANT ALL PRIVILEGES ON TABLE "extract".contactdetail TO ukrdc;
 
-CREATE INDEX contactdetail_pid_idx
+CREATE INDEX ix_contactdetail_pid
   ON "extract".contactdetail (pid);

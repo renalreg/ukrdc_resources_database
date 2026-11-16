@@ -19,3 +19,6 @@ WITH (
 ALTER TABLE "extract".pvdelete
   OWNER TO ukrdc;
 GRANT ALL PRIVILEGES ON TABLE "extract".pvdelete TO ukrdc;
+
+CREATE INDEX ix_pvdelete_pid
+  ON "extract".pvdelete (pid);

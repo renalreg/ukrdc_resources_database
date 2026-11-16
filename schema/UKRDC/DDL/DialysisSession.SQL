@@ -43,5 +43,5 @@ ALTER TABLE "extract".dialysissession
   OWNER TO ukrdc;
 GRANT ALL PRIVILEGES ON TABLE "extract".dialysissession TO ukrdc;
 
-CREATE INDEX dialysissession_pid_idx
+CREATE INDEX ix_dialysissession_pid
   ON "extract".dialysissession (pid);

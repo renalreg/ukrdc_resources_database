@@ -24,5 +24,5 @@ ALTER TABLE "extract".name
   OWNER TO ukrdc;
 GRANT ALL PRIVILEGES ON TABLE "extract".name TO ukrdc;
 
-CREATE INDEX name_pid_idx
+CREATE INDEX ix_name_pid
   ON "extract".name (pid);

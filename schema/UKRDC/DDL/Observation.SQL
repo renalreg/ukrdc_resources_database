@@ -39,5 +39,11 @@ ALTER TABLE "extract".observation
   OWNER TO ukrdc;
 GRANT ALL PRIVILEGES ON TABLE "extract".observation TO ukrdc;
 
-CREATE INDEX observation_pid_idx
+CREATE INDEX ix_observation_pid
   ON "extract".observation (pid);
+
+CREATE INDEX ix_observation_pid_obstime
+  ON "extract".observation (pid, observationtime);
+
+CREATE INDEX idx_observation_pid_observationcode_observationtime
+  ON "extract".observation (pid, observationcode, observationtime);

@@ -37,7 +37,14 @@ ALTER TABLE "extract".resultitem
   OWNER TO ukrdc;
 GRANT ALL PRIVILEGES ON TABLE "extract".resultitem TO ukrdc;
 
-CREATE INDEX resultitem_orderid
-  ON "extract".resultitem USING btree
-  (orderid COLLATE pg_catalog."default")
-  TABLESPACE pg_default;
+CREATE INDEX ix_resultitem_orderid
+  ON "extract".resultitem (orderid);
+
+CREATE INDEX ix_resultitem_serviceidcode
+  ON "extract".resultitem (serviceidcode);
+
+CREATE INDEX resultitem_orderid_firstpart
+  ON "extract".resultitem (left(orderid, -32));
+
+CREATE INDEX idx_resultitem_orderid_serviceidcode_observationtime
+  ON "extract".resultitem (orderid, serviceidcode, observationtime);

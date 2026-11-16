@@ -31,5 +31,5 @@ ALTER TABLE "extract".programmembership
   OWNER TO ukrdc;
 GRANT ALL PRIVILEGES ON TABLE "extract".programmembership TO ukrdc;
 
-CREATE INDEX programmembership_pid_idx
+CREATE INDEX ix_programmembership_pid
   ON "extract".programmembership (pid);

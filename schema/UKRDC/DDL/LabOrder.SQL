@@ -42,7 +42,7 @@ CREATE TABLE "extract".laborder
   creation_date timestamp without time zone DEFAULT now() NOT NULL,
   update_date timestamp without time zone,
   repository_update_date timestamp without time zone,
-  CONSTRAINT order_pkey PRIMARY KEY (id),
+  CONSTRAINT laborder_pkey PRIMARY KEY (id),
   CONSTRAINT laborder_pid_fkey
     FOREIGN KEY (pid)
     REFERENCES "extract".patientrecord(pid)
@@ -54,8 +54,17 @@ ALTER TABLE "extract".laborder
   OWNER TO ukrdc;
 GRANT ALL PRIVILEGES ON TABLE "extract".laborder TO ukrdc;
 
--- keep or drop this as you prefer
-CREATE INDEX order_id
-    ON "extract".laborder USING btree
-    (id COLLATE pg_catalog."default")
-    TABLESPACE pg_default;
+CREATE INDEX ix_laborder_pid
+  ON "extract".laborder (pid);
+
+CREATE INDEX ix_laborder_creation_date
+  ON "extract".laborder (creation_date);
+
+CREATE INDEX ix_laborder_update_date
+  ON "extract".laborder (update_date);
+
+CREATE INDEX ix_laborder_repository_update_date
+  ON "extract".laborder (repository_update_date);
+
+CREATE INDEX idx_laborder_pid_id
+  ON "extract".laborder (pid, id);

@@ -18,7 +18,7 @@ CREATE TABLE "extract".ukrdc_ods_gp_codes
   type "extract".gp_type,
   creation_date timestamp without time zone DEFAULT now() NOT NULL,
   update_date timestamp without time zone,
-  CONSTRAINT ukrdc_ods_gp_codes_pkey PRIMARY KEY (code)
+  CONSTRAINT pk_ukrdc_ods_gp_codes PRIMARY KEY (code)
 )
 WITH (
   OIDS=FALSE
